@@ -3,7 +3,6 @@
 DLTunner is a Kotlin-based Android guitar tuner app built with Jetpack Compose. It listens to your guitar through the microphone, detects the active string and pitch, and gives live feedback to help you tune accurately.
 
 <p align="center">
-  <img src="screenshots/Screenshot_20261002_111731.png" alt="DLTunner app screenshot" width="300" />
   <img src="screenshots/Screenshot_20261002_111852.png" alt="DLTunner tuning UI" width="300" />
 </p>
 
@@ -112,21 +111,11 @@ The app includes several common guitar tuning presets:
 
 These are defined in `app/src/main/java/com/darthleonard/dltunner/data/tuning/TuningPresets.kt`.
 
-## Screenshots
+## License
 
-![Main tuning screen](screenshots/Screenshot_20261002-112509.png)
+DLTunner is licensed under the **GNU General Public License v3.0 (GPL-3.0)**.
 
-![Tuning status and pitch feedback](screenshots/Screenshot_20261002-112518.png)
-
-![Multiple tuning options](screenshots/Screenshot_20261002-112639.png)
-
-![App interface preview](screenshots/Screenshot_20261002-112655.png)
-
-## Repository Status
-
-This repository is now public on GitHub.
-
-Note: there is currently no license file in the repository, so licensing terms should be confirmed before public redistribution or reuse.
+See the [LICENSE](LICENSE) file for the complete license text.
 
 ## Contributing
 
