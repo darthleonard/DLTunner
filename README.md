@@ -113,9 +113,13 @@ These are defined in `app/src/main/java/com/darthleonard/dltunner/data/tuning/Tu
 
 ## License
 
-DLTunner is licensed under the **GNU General Public License v3.0 (GPL-3.0)**.
+DLTunner is licensed under the **Apache License, Version 2.0**.
 
-See the [LICENSE](LICENSE) file for the complete license text.
+You may obtain a copy of the License at:
+
+https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 ## Contributing
 
