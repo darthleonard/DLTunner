@@ -1,0 +1,57 @@
+# Built application files and bundles
+*.apk
+*.ap_
+*.aab
+*.aar
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java and Kotlin class files
+*.class
+*.ktm
+
+# Generated files and build outputs
+bin/
+gen/
+out/
+build/
+**/build/
+
+# Gradle files and caches
+.gradle/
+gradle-wrapper.jar
+.gradletasknamecache
+
+# Local configuration file (contains your local Android SDK path, etc.)
+local.properties
+
+# Log Files
+*.log
+hs_err_pid*
+
+# Android Studio / IntelliJ IDEA files
+*.iml
+.idea/
+*.ipr
+*.iws
+.navigation/
+captures/
+.externalNativeBuild/
+.cxx/
+output-metadata.json
+
+# Android Studio profiling and memory dumps
+*.hprof
+
+# Keystore files (NEVER commit your production signing keys)
+*.jks
+*.keystore
+
+# Google Services configuration (Uncomment if you manage distinct environments manually)
+# google-services.json
+
+# Operating System specific files
+.DS_Store
+Thumbs.db
+desktop.ini

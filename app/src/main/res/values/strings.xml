@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">DLTunner</string>
+
+    <!-- Tuner States -->
+    <string name="status_no_signal">Sin señal</string>
+    <string name="status_too_low">MUY BAJA</string>
+    <string name="status_in_tune">AFINADA</string>
+    <string name="status_too_high">MUY ALTA</string>
+    <string name="instruction_play_string">Toca una cuerda</string>
+
+    <!-- Tunings -->
+    <string name="tuning_label">Afinación</string>
+    <string name="tuning_standard">Estándar</string>
+    <string name="tuning_drop_d">Drop D</string>
+    <string name="tuning_eb_standard">Eb Standard</string>
+    <string name="tuning_d_standard">D Standard</string>
+
+    <!-- Placeholders and Units -->
+    <string name="frequency_unit">Hz</string>
+    <string name="frequency_format">%.2f Hz</string>
+    <string name="cents_format">%+.1f cents</string>
+    <string name="no_frequency_placeholder">-- Hz</string>
+    <string name="no_note_placeholder">--</string>
+
+    <!-- Permissions -->
+    <string name="permission_title">Permiso de micrófono</string>
+    <string name="permission_rationale">DLTunner necesita acceso al micrófono para escuchar y afinar las cuerdas de tu guitarra.</string>
+    <string name="permission_grant_button">Conceder permiso</string>
+    <string name="permission_denied_message">Se requiere el permiso de micrófono para utilizar el afinador. Por favor, permítelo en los ajustes del dispositivo.</string>
+
+    <!-- Errors -->
+    <string name="audio_capture_error">Error al iniciar el micrófono</string>
+</resources>
