@@ -19,9 +19,9 @@ build/
 **/build/
 
 # Gradle files and caches
-.gradle/
-gradle-wrapper.jar
-.gradletasknamecache
+#.gradle/
+#gradle-wrapper.jar
+#.gradletasknamecache
 
 # Local configuration file (contains your local Android SDK path, etc.)
 local.properties
