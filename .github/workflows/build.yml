@@ -1,0 +1,52 @@
+name: Build DLTunner Android Bundle
+
+on:
+   push:
+   pull_request:
+      branches:
+         - master
+
+jobs:
+   build:
+      name: Build DLTunner
+      runs-on: ubuntu-latest
+
+      steps:
+         - name: Checkout source
+           uses: actions/checkout@v4
+
+         - name: Setup Java
+           uses: actions/setup-java@v4
+           with:
+              distribution: "temurin"
+              java-version: "21"
+              cache: gradle
+
+         - name: Setup Gradle
+           uses: gradle/actions/setup-gradle@v4
+
+         - name: Make Gradle wrapper executable
+           run: chmod +x ./gradlew
+
+         - name: Run unit tests
+           run: ./gradlew test
+
+         - name: Generate bundle
+           run: ./gradlew bundleRelease
+
+         - name: Sign bundle
+           uses: ilharp/sign-android-release@v1
+           id: sign_app
+           with:
+              releaseDir: ./app/build/outputs/bundle/release/
+              signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
+              keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
+              keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+              keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+              buildToolsVersion: 34.0.0
+
+         - name: Upload bundle
+           uses: actions/upload-artifact@v4
+           with:
+              name: spendly-app
+              path: ${{steps.sign_app.outputs.signedFile}}
