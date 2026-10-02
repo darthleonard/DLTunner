@@ -19,17 +19,6 @@ DLTunner is a Kotlin-based Android guitar tuner app built with Jetpack Compose. 
 
 This project is an Android application that analyzes audio input and estimates the fundamental frequency of the note being played. The app uses a lightweight pitch detection approach and presents the tuned result directly in the UI.
 
-## Screenshots
-
-The repository includes sample screenshots in the `screenshots/` directory:
-
-- `screenshots/Screenshot_20261002-112509.png`
-- `screenshots/Screenshot_20261002-112518.png`
-- `screenshots/Screenshot_20261002-112639.png`
-- `screenshots/Screenshot_20261002-112655.png`
-- `screenshots/Screenshot_20261002_111731.png`
-- `screenshots/Screenshot_20261002_111852.png`
-
 ## Tech Stack
 
 - Kotlin
