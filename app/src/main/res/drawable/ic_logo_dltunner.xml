@@ -1,0 +1,46 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- L Monogram Shape -->
+    <path
+        android:fillColor="#F2F4F7"
+        android:pathData="M37,27 L50,27 L50,160 L133,160 L133,173 L37,173 Z" />
+
+    <!-- D Outer & Inner Frame Shape -->
+    <path
+        android:fillColor="#F2F4F7"
+        android:fillType="evenOdd"
+        android:pathData="M61,27 L102,27 A61,61 0 0,1 102,149 L61,149 Z M74,40 L74,136 L102,136 A48,48 0 0,0 102,40 Z" />
+
+    <!-- Guitar String 1 -->
+    <path
+        android:strokeColor="#F2F4F7"
+        android:strokeWidth="2.2"
+        android:pathData="M79.6,44 L79.6,132" />
+
+    <!-- Guitar String 2 (split around accent tuning dot) -->
+    <path
+        android:strokeColor="#F2F4F7"
+        android:strokeWidth="2.2"
+        android:pathData="M85.2,44 L85.2,79.5 M85.2,96.5 L85.2,132" />
+
+    <!-- Guitar String 3 (split around accent tuning dot) -->
+    <path
+        android:strokeColor="#F2F4F7"
+        android:strokeWidth="2.2"
+        android:pathData="M90.8,44 L90.8,79.5 M90.8,96.5 L90.8,132" />
+
+    <!-- Guitar String 4 -->
+    <path
+        android:strokeColor="#F2F4F7"
+        android:strokeWidth="2.2"
+        android:pathData="M96.4,44 L96.4,132" />
+
+    <!-- Tuning Indicator Green Dot -->
+    <path
+        android:fillColor="#4ADE80"
+        android:pathData="M88,79.5 A8.5,8.5 0 1,1 87.9,79.5 Z" />
+</vector>
