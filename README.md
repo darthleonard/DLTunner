@@ -1,6 +1,11 @@
 # DLTunner
 
-DLTunner is a Kotlin-based Android guitar tuner app built with Jetpack Compose. It listens to your guitar through the microphone, detects the active string and pitch, and shows whether the note is flat, sharp, or in tune.
+DLTunner is a Kotlin-based Android guitar tuner app built with Jetpack Compose. It listens to your guitar through the microphone, detects the active string and pitch, and gives live feedback to help you tune accurately.
+
+<p align="center">
+  <img src="screenshots/Screenshot_20261002_111731.png" alt="DLTunner app screenshot" width="300" />
+  <img src="screenshots/Screenshot_20261002_111852.png" alt="DLTunner tuning UI" width="300" />
+</p>
 
 ## Features
 
@@ -13,21 +18,21 @@ DLTunner is a Kotlin-based Android guitar tuner app built with Jetpack Compose. 
 - String detection and pitch analysis
 - Visual cents meter and tuning status indicators
 - Material 3 UI with a modern Android experience
-- Splash screen and permission flow for microphone access
+- Splash screen and microphone permission flow
 
 ## App Overview
 
-This project is an Android application that analyzes audio input and estimates the fundamental frequency of the note being played. The app uses a lightweight pitch detection approach and presents the tuned result directly in the UI.
+This project is an Android application that analyzes live audio input and estimates the fundamental frequency of the note being played. The detected pitch is compared against the selected string target, and the app shows whether the note is sharp, flat, or in tune.
 
 ## Tech Stack
 
 - Kotlin
 - Android Jetpack Compose
 - Material 3
-- Android Core KTX
+- AndroidX Core KTX
 - Lifecycle ViewModel
-- Audio capture via Android microphone APIs
-- Pitch detection logic based on a YIN-inspired implementation
+- Android microphone audio capture
+- Pitch detection based on a YIN-inspired approach
 
 ## Project Structure
 
@@ -42,18 +47,21 @@ DLTunner/
 │   │   │   │   ├── domain/
 │   │   │   │   ├── presentation/
 │   │   │   │   └── ui/
-│   │   │   └── res/
+│   │   │   ├── res/
+│   │   │   └── AndroidManifest.xml
 │   │   ├── test/
 │   │   └── androidTest/
 │   └── build.gradle.kts
+├── gradle/
+├── screenshots/
+├── .gitignore
 ├── build.gradle.kts
 ├── gradle.properties
 ├── gradlew
 ├── gradlew.bat
 ├── settings.gradle.kts
-├── screenshots/
-├── .gitignore
-└── README.md
+├── README.md
+└── LICENSE (if added later)
 ```
 
 ## Getting Started
@@ -63,7 +71,7 @@ DLTunner/
 - Android Studio
 - JDK 11 or newer
 - Android SDK configured for the project
-- A physical Android device or emulator
+- A physical Android device or emulator with microphone support
 
 ### Run the app
 
@@ -84,18 +92,18 @@ cd DLTunner
 
 6. When prompted, allow microphone permission.
 
-## How it works
+## How It Works
 
-The app listens to the microphone input, analyzes the audio waveform in the app's pitch detection layer, and estimates the frequency of the currently played note. The detected pitch is compared against the selected string's target frequency, and the app displays:
+The app listens to microphone input, analyzes the waveform in the pitch detection layer, and estimates the frequency of the currently played note. The detected pitch is then compared to the selected tuning target and displayed as:
 
 - current note frequency
 - cents offset from the target
 - whether the string is too low, too high, or in tune
 - the selected string state within the tuning layout
 
-## Tuning presets
+## Tuning Presets
 
-The app includes several common tuning presets:
+The app includes several common guitar tuning presets:
 
 - Standard
 - Drop D
@@ -104,14 +112,25 @@ The app includes several common tuning presets:
 
 These are defined in `app/src/main/java/com/darthleonard/dltunner/data/tuning/TuningPresets.kt`.
 
-## Notes
+## Screenshots
 
-- The project is currently configured as a private repository.
-- There is no explicit license file included at the moment, so license terms should be confirmed before public distribution or reuse.
+![Main tuning screen](screenshots/Screenshot_20261002-112509.png)
+
+![Tuning status and pitch feedback](screenshots/Screenshot_20261002-112518.png)
+
+![Multiple tuning options](screenshots/Screenshot_20261002-112639.png)
+
+![App interface preview](screenshots/Screenshot_20261002-112655.png)
+
+## Repository Status
+
+This repository is now public on GitHub.
+
+Note: there is currently no license file in the repository, so licensing terms should be confirmed before public redistribution or reuse.
 
 ## Contributing
 
-Contributions are welcome. If you want to improve the tuner, add more tuning presets, improve detection accuracy, or polish the UI, feel free to open an issue or submit a pull request.
+Contributions are welcome. If you want to improve the tuner, add more tuning presets, refine pitch detection, or polish the UI, feel free to open an issue or submit a pull request.
 
 ## Contact
 
