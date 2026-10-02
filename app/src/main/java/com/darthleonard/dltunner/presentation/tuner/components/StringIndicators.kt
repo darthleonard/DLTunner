@@ -20,20 +20,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.darthleonard.dltunner.domain.model.GuitarString
+import com.darthleonard.dltunner.domain.model.TunerState
 
 /**
  * Visual indicator row displaying all six guitar strings.
- * Emphasizes the automatically detected active string.
+ * Emphasizes active playing string and retains saved [TunerState] status colors.
  */
 @Composable
 fun StringIndicators(
     strings: List<GuitarString>,
     activeString: GuitarString?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    stringStates: Map<Int, TunerState> = emptyMap(),
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -43,33 +46,52 @@ fun StringIndicators(
         // Strings ordered 6 to 1
         strings.sortedByDescending { it.stringNumber }.forEach { string ->
             val isActive = activeString?.stringNumber == string.stringNumber
+            val savedState = stringStates[string.stringNumber] ?: TunerState.NO_SIGNAL
+
+            val (targetBgColor, targetBorderColor, targetTextColor) = when (savedState) {
+                TunerState.IN_TUNE -> Triple(
+                    Color(0xFF00E676).copy(alpha = 0.22f),
+                    Color(0xFF00E676),
+                    Color(0xFF00E676)
+                )
+                TunerState.TOO_LOW -> Triple(
+                    Color(0xFFFF9100).copy(alpha = 0.22f),
+                    Color(0xFFFF9100),
+                    Color(0xFFFF9100)
+                )
+                TunerState.TOO_HIGH -> Triple(
+                    Color(0xFFFF1744).copy(alpha = 0.22f),
+                    Color(0xFFFF1744),
+                    Color(0xFFFF1744)
+                )
+                TunerState.NO_SIGNAL -> Triple(
+                    MaterialTheme.colorScheme.surfaceVariant,
+                    MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
+            // Active string gets bright white/primary outline accent
+            val effectiveBorderColor = if (isActive) {
+                Color.White
+            } else {
+                targetBorderColor
+            }
 
             val backgroundColor by animateColorAsState(
-                targetValue = if (isActive) {
-                    MaterialTheme.colorScheme.primaryContainer
-                } else {
-                    MaterialTheme.colorScheme.surfaceVariant
-                },
+                targetValue = targetBgColor,
                 animationSpec = tween(durationMillis = 200),
                 label = "stringBgColor"
             )
 
             val borderColor by animateColorAsState(
-                targetValue = if (isActive) {
-                    MaterialTheme.colorScheme.primary
-                } else {
-                    MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
-                },
+                targetValue = effectiveBorderColor,
                 animationSpec = tween(durationMillis = 200),
                 label = "stringBorderColor"
             )
 
             val textColor by animateColorAsState(
-                targetValue = if (isActive) {
-                    MaterialTheme.colorScheme.onPrimaryContainer
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                },
+                targetValue = targetTextColor,
                 animationSpec = tween(durationMillis = 200),
                 label = "stringTextColor"
             )
@@ -85,7 +107,7 @@ fun StringIndicators(
                         .clip(CircleShape)
                         .background(backgroundColor)
                         .border(
-                            width = if (isActive) 2.5.dp else 1.dp,
+                            width = if (isActive) 3.dp else 1.5.dp,
                             color = borderColor,
                             shape = CircleShape
                         )
@@ -93,10 +115,10 @@ fun StringIndicators(
                     Text(
                         text = string.displayName,
                         style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = if (isActive) FontWeight.ExtraBold else FontWeight.Medium,
+                            fontWeight = if (isActive) FontWeight.ExtraBold else FontWeight.Bold,
                             fontSize = 18.sp
                         ),
-                        color = textColor
+                        color = if (isActive && (savedState == TunerState.NO_SIGNAL)) Color.White else textColor
                     )
                 }
 
@@ -105,9 +127,9 @@ fun StringIndicators(
                 Text(
                     text = string.stringNumber.toString(),
                     style = MaterialTheme.typography.labelMedium.copy(
-                        fontWeight = if (isActive) FontWeight.Bold else FontWeight.Normal
+                        fontWeight = if (isActive) FontWeight.ExtraBold else FontWeight.Normal
                     ),
-                    color = if (isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
+                    color = if (isActive) Color.White else targetTextColor.copy(alpha = 0.8f)
                 )
             }
         }

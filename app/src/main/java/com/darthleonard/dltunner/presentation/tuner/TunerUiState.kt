@@ -18,5 +18,6 @@ data class TunerUiState(
     val confidence: Double = 0.0,
     val isListening: Boolean = false,
     val isPermissionGranted: Boolean = false,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val stringStates: Map<Int, TunerState> = emptyMap()
 )

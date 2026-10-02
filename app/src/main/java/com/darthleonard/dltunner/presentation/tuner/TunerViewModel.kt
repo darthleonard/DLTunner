@@ -42,13 +42,15 @@ class TunerViewModel(
     private val _uiState = MutableStateFlow(
         TunerUiState(
             selectedTuning = defaultTuning,
-            availableTunings = availableTunings
+            availableTunings = availableTunings,
         )
     )
     val uiState: StateFlow<TunerUiState> = _uiState.asStateFlow()
 
     private var audioJob: Job? = null
     private var noSignalCount = 0
+    // Keep pitch reading displayed for ~3 seconds (~32 buffer chunks of ~93ms each) after string decays
+    private val noSignalHoldChunks = 32
     private var smoothedCents: Double? = null
     private var smoothedFrequency: Double? = null
     private var currentDetectedString: GuitarString? = null
@@ -70,7 +72,8 @@ class TunerViewModel(
                 detectedNote = null,
                 frequency = null,
                 cents = null,
-                state = TunerState.NO_SIGNAL
+                state = TunerState.NO_SIGNAL,
+                stringStates = emptyMap()
             )
         }
         resetSmoothing()
@@ -135,8 +138,8 @@ class TunerViewModel(
 
             // Low-pass exponential smoothing (alpha = 0.35)
             val alpha = 0.35
-            val currentSmoothCents = smoothedCents?.let { alpha * rawCents + (1 - alpha) * it } ?: rawCents
-            val currentSmoothFreq = smoothedFrequency?.let { alpha * detectionResult.frequency + (1 - alpha) * it } ?: detectionResult.frequency
+            val currentSmoothCents = smoothedCents?.let { (alpha * rawCents) + ((1 - alpha) * it) } ?: rawCents
+            val currentSmoothFreq = smoothedFrequency?.let { (alpha * detectionResult.frequency) + ((1 - alpha) * it) } ?: detectionResult.frequency
 
             smoothedCents = currentSmoothCents
             smoothedFrequency = currentSmoothFreq
@@ -146,6 +149,9 @@ class TunerViewModel(
                 isSignalValid = true
             )
 
+            // Save string indicator status matching TunerState for this string
+            val updatedStringStates = _uiState.value.stringStates + (detectedString.stringNumber to tunerState)
+
             _uiState.update {
                 it.copy(
                     detectedString = detectedString,
@@ -153,13 +159,14 @@ class TunerViewModel(
                     frequency = currentSmoothFreq,
                     cents = currentSmoothCents,
                     state = tunerState,
-                    confidence = detectionResult.confidence
+                    confidence = detectionResult.confidence,
+                    stringStates = updatedStringStates
                 )
             }
         } else {
             noSignalCount++
-            // Require 6 consecutive frames (~150ms) of no signal before clearing state
-            if (noSignalCount >= 6) {
+            // Hold pitch display for ~3 seconds before resetting to NO_SIGNAL state
+            if (noSignalCount >= noSignalHoldChunks) {
                 resetSmoothing()
                 _uiState.update {
                     it.copy(

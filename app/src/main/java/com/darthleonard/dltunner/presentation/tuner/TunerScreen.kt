@@ -163,10 +163,11 @@ fun TunerScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // String Indicators (6 to 1)
+                    // String Indicators (6 to 1) with saved tuning state colors
                     StringIndicators(
                         strings = uiState.selectedTuning.strings,
-                        activeString = uiState.detectedString
+                        activeString = uiState.detectedString,
+                        stringStates = uiState.stringStates
                     )
 
                     Spacer(modifier = Modifier.height(20.dp))
