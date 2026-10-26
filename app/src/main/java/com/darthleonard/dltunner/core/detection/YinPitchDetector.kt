@@ -1,5 +1,6 @@
 package com.darthleonard.dltunner.core.detection
 
+import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -22,13 +23,15 @@ class YinPitchDetector(
 ) : PitchDetector {
 
     override suspend fun detect(samples: FloatArray, sampleRate: Int): PitchDetectionResult {
-        if (samples.size < 512) {
+        if (samples.size < 512 || sampleRate <= 0) {
             return PitchDetectionResult.NO_PITCH
         }
 
-        // 1. RMS Energy check for noise gate
+        val cleanedSamples = filterAudioBand(samples, sampleRate)
+
+        // 1. RMS energy check for noise gate
         var sumSquares = 0.0
-        for (sample in samples) {
+        for (sample in cleanedSamples) {
             sumSquares += sample * sample
         }
         val rms = sqrt(sumSquares / samples.size)
@@ -45,13 +48,13 @@ class YinPitchDetector(
         }
 
         // 2. Difference function d(tau)
-        val windowSize = samples.size - tauMax
+        val windowSize = cleanedSamples.size - tauMax
         val yinBuffer = DoubleArray(tauMax + 1)
 
         for (tau in 1..tauMax) {
             var deltaSum = 0.0
             for (i in 0 until windowSize) {
-                val diff = (samples[i] - samples[i + tau]).toDouble()
+                val diff = (cleanedSamples[i] - cleanedSamples[i + tau]).toDouble()
                 deltaSum += diff * diff
             }
             yinBuffer[tau] = deltaSum
@@ -127,5 +130,32 @@ class YinPitchDetector(
             confidence = confidence,
             isPitchDetected = true,
         )
+    }
+
+    private fun filterAudioBand(samples: FloatArray, sampleRate: Int): FloatArray {
+        val dt = 1.0 / sampleRate
+        val highPassCutoff = 40.0
+        val lowPassCutoff = 800.0
+        val highPassRc = 1.0 / (2.0 * PI * highPassCutoff)
+        val lowPassRc = 1.0 / (2.0 * PI * lowPassCutoff)
+        val highPassAlpha = highPassRc / (highPassRc + dt)
+        val lowPassAlpha = dt / (lowPassRc + dt)
+
+        val filtered = FloatArray(samples.size)
+        var previousInput = 0.0
+        var highPassOutput = 0.0
+        var lowPassOutput = 0.0
+        var secondLowPassOutput = 0.0
+
+        for (i in samples.indices) {
+            val input = samples[i].toDouble()
+            highPassOutput = highPassAlpha * (highPassOutput + input - previousInput)
+            previousInput = input
+            lowPassOutput += lowPassAlpha * (highPassOutput - lowPassOutput)
+            secondLowPassOutput += lowPassAlpha * (lowPassOutput - secondLowPassOutput)
+            filtered[i] = secondLowPassOutput.toFloat()
+        }
+
+        return filtered
     }
 }
